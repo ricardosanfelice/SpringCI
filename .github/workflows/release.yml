@@ -5,7 +5,7 @@
 on:
   push:
       
-name: Publish
+name: Release
 
 jobs:
   build:
@@ -29,7 +29,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
   release:
-    needs: test
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
