@@ -65,45 +65,44 @@ dependencies {
     testImplementation('org.mockito:mockito-core:1.9.+')
 }
 
-def getGitHash = { ->
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'git', 'commit', '-a', '-m "Entrega de versão"'
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
-}
+// def criarCommitVersao = { versao ->
+//     def stdout = new ByteArrayOutputStream()
+// 	println versao
+//     exec {
+//         commandLine 'git', 'commit', '-a', '-m', 'Entrega de versão ' + versao + ' | Data: ' + LocalDate.now().toString()
+//         standardOutput = stdout
+//     }
+// 	println stdout.toString()
+//     return stdout.toString().trim()
+// }
 
 task release {
 	
 	doFirst {
 		ant.replaceregexp(file: appFile, match:'release: ' + app.versao.release++, replace:'release: ' + app.versao.release, flags:'g', byline:true)
+		ant.replaceregexp(file: appFile, match:'data: [0-9]{4}-[0-9]{2}-[0-9]{2}', replace:'data: ' + LocalDate.now().toString(), flags:'g', byline:true)
 		project.version = new StringBuilder()
 		.append(app.versao.major)
 		.append(".${app.versao.minor}")
 		.append(".${app.versao.release}").toString()
-
-		
 	}
 	doLast {
-		getGitHash
+		build
+	}
+	doLast {
+		println 'v'+version
 	}
 }
 
-task update {
-	doLast{ 
-		ant.replaceregexp(file: appFile, match:'release: ' + app.versao.release++, replace:'release: ' + app.versao.release, flags:'g', byline:true)
-		project.version = new StringBuilder()
-		.append(app.versao.major)
-		.append(".${app.versao.minor}")
-		.append(".${app.versao.release}").toString()
-		// version = project.version
+task data {
+	doLast {
+		println LocalDate.now().toString()
 	}
 }
 
 task getVersion {
 	doLast{
-		println version
+		println 'v'+version
 	}
 }
 
