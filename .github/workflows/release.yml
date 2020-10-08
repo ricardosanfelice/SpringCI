@@ -12,22 +12,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+    # - uses: actions/cache@v2
+    #   with:
+    #     path: |
+    #       ~/.gradle/caches
+    #       ~/.gradle/wrapper
+    #     key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-gradle-
     - name: Set up JDK 11
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build      
+    # - name: Grant execute permission for gradlew
+    #   run: chmod +x gradlew
+    # - name: Build with Gradle
+    #   run: ./gradlew build      
+    # - uses: actions/cache@v2
+    #   with:
+    #     path: |
+    #       ~/.gradle/caches
+    #       ~/.gradle/wrapper
+    #     key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-gradle-
+    - uses: ricardosanfelice/create-version@v1.0.21
+      with:
+        script: 'chmod +x ./gradlew && ./gradlew -q release'
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
     - uses: actions/cache@v2
       with:
         path: |
@@ -35,13 +51,7 @@ jobs:
           ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
         restore-keys: |
-          ${{ runner.os }}-gradle-
-    - name: Get APP version
-      run: ./gradlew -q release | tee ${{ env.APP_VERSION }}
-    - name: Create version
-      uses: ricardosanfelice/create-version@v1.0.3
-      with:
-        version: ${{ env.APP_VERSION }}
+          ${{ runner.os }}-gradle-    
     - name: Publish Version
       run: gradle publish
       env:
