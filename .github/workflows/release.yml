@@ -39,7 +39,7 @@ jobs:
     - name: Get APP version
       run: ./gradlew -q release | tee ${{ env.APP_VERSION }}
     - name: Create version
-      uses: ricardosanfelice/create-version@v1.0.2
+      uses: ricardosanfelice/create-version@v1.0.3
       with:
         version: ${{ env.APP_VERSION }}
     - name: Publish Version
