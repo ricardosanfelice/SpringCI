@@ -1,7 +1,9 @@
+# on:
+#   pull_request:
+#     types: [closed]
+#     branches: [main, master, dev, rc]
 on:
-  pull_request:
-    types: [closed]
-    branches: [main, master, dev, rc]
+  push:
       
 name: Publish
 
@@ -17,7 +19,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew assemble      
+      run: ./gradlew build      
     - uses: actions/cache@v2
       with:
         path: |
@@ -26,27 +28,6 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Run tests with Gradle
-      run: ./gradlew check
   release:
     needs: test
     runs-on: ubuntu-latest
@@ -66,7 +47,7 @@ jobs:
       - name: Get APP version
         run: ./gradlew -q release | tee ${{ env.APP_VERSION }}
       - name: Create version
-        uses: ricardosanfelice/create-version@v1
+        uses: ricardosanfelice/create-version@v1.0.1
         with:
           version: ${{ env.APP_VERSION }}
       - name: Publish Version
