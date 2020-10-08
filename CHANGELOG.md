@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.0.2
+
+- Update release.yml
+
+
 ## v1.0.1
 
 - Update release.yml
