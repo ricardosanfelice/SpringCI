@@ -8,7 +8,7 @@ on:
 name: Release
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -36,31 +36,15 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: "Get cache"
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-      - name: Get APP version
-        run: ./gradlew -q release | tee ${{ env.APP_VERSION }}
-      - name: Create version
-        uses: ricardosanfelice/create-version@v1.0.2
-        with:
-          version: ${{ env.APP_VERSION }}
-      - name: Publish Version
-        run: gradle publish
-        env:
-          USERNAME: ${{ github.actor }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Get APP version
+      run: ./gradlew -q release | tee ${{ env.APP_VERSION }}
+    - name: Create version
+      uses: ricardosanfelice/create-version@v1.0.2
+      with:
+        version: ${{ env.APP_VERSION }}
+    - name: Publish Version
+      run: gradle publish
+      env:
+        USERNAME: ${{ github.actor }}
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
