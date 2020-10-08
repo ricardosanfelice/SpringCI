@@ -158,7 +158,7 @@ publishing {
     repositories {
         maven {
             name = "SpringLibCI"
-            url = "https://maven.pkg.github.com/ricardosanfelice/springlibci"
+            url = "https://maven.pkg.github.com/ricardosanfelice/java-utils"
             credentials {
                 username = project.findProperty("github.user") ?: System.getenv("USERNAME")
                 password = project.findProperty("github.token") ?: System.getenv("TOKEN")
