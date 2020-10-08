@@ -1,4 +1,4 @@
-package br.com.sanfelice.springlibci.utils.date;
+package br.com.sanfelice.javautils.utils.date;
 
 import java.time.LocalDate;
 
