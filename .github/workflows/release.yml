@@ -34,7 +34,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
   version:
-    need: build
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
