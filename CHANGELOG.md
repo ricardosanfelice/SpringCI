@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.0.3
+
+- Fixed workflow
+
+
 ## v1.0.2
 
 - Update release.yml
