@@ -1,10 +1,12 @@
-name: Build
-
 on:
-  pull_request:
+  push:
+    tags:
+      - 'v*'
+      
+name: Publish
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -12,10 +14,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build      
     - uses: actions/cache@v2
       with:
         path: |
@@ -23,4 +21,10 @@ jobs:
           ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
         restore-keys: |
-          ${{ runner.os }}-gradle-
+          ${{ runner.os }}-gradle-    
+    - name: Publish Version
+      run: gradle publish
+      env:
+        USERNAME: ${{ github.actor }}
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
