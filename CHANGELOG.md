@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.0.4
+
+- Entrega da versão v1.0.3
+
+- Fixed workflow
+
+
 ## v1.0.3
 
 - Fixed workflow
