@@ -151,13 +151,13 @@ gradle.projectsEvaluated {
 publishing {
     publications {
         maven(MavenPublication) {
-            artifactId = 'springlibci'
+            artifactId = 'java-utils'
             from components.java
         }
     }
     repositories {
         maven {
-            name = "SpringLibCI"
+            name = "Java-Utils"
             url = "https://maven.pkg.github.com/ricardosanfelice/java-utils"
             credentials {
                 username = project.findProperty("github.user") ?: System.getenv("USERNAME")

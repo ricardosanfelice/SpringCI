@@ -40,4 +40,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ricardosanfelice/create-version@java
       with:
-        script: 'chmod +x ./gradlew && ./gradlew -q release'
+          ACTIONS_RUNNER_DEBUG: true
+          script: 'chmod +x ./gradlew && ./gradlew -q release'
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
