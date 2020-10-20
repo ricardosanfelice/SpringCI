@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.0.4
+
+- Changed action create-version to v1.1.1
+
+- Fixed publish artifact
+
+
 ## v1.0.3
 
 - Fixed workflow
