@@ -65,17 +65,6 @@ dependencies {
     testImplementation('org.mockito:mockito-core:1.9.+')
 }
 
-// def criarCommitVersao = { versao ->
-//     def stdout = new ByteArrayOutputStream()
-// 	println versao
-//     exec {
-//         commandLine 'git', 'commit', '-a', '-m', 'Entrega de versão ' + versao + ' | Data: ' + LocalDate.now().toString()
-//         standardOutput = stdout
-//     }
-// 	println stdout.toString()
-//     return stdout.toString().trim()
-// }
-
 task release {
 	
 	doFirst {
@@ -104,10 +93,6 @@ task getVersion {
 	doLast{
 		println 'v'+version
 	}
-}
-
-task a {
-
 }
 
 jacoco {
