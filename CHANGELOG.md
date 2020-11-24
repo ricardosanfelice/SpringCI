@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.0.5
+
+- Changed action create-version to v1.1.5
+
+
 ## v1.0.4
 
 - Changed action create-version to v1.1.1
