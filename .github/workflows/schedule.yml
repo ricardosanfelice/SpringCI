@@ -6,28 +6,28 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        branch: [main, dev]
     runs-on: ubuntu-latest
-    - name: Checkout branch default
-      uses: actions/checkout@v2
-    - name: "Check for new commits"
-      run: |
-        BRANCH=$(git branch --show-current)
-        LAST_TAG="$(git describe --abbrev=0 || echo "-1")"
-        COMMIT_COUNT=0
-        if [ "$LAST_TAG" == "-1" ]; then
-            COMMIT_COUNT=git log --oneline | wc -l
-        else
-            COMMIT_COUNT=git rev-list $LAST_TAG..HEAD --count
-        fi
+    steps:
+      - name: Checkout branch ${{ matrix.branch }}
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch }}
+      - name: "Check for new commits"
+        run: |
+          BRANCH=$(git branch --show-current)
+          LAST_TAG="$(git describe --abbrev=0 || echo "-1")"
+          COMMIT_COUNT=0
+          if [ "$LAST_TAG" == "-1" ]; then
+              COMMIT_COUNT=$(git log --oneline | wc -l)
+          else
+              COMMIT_COUNT=$(git rev-list $LAST_TAG..HEAD --count)
+          fi
 
-        if [ $COMMIT_COUNT gt 0]; then
-          echo "Branch $BRANCH have $COMMIT_COUNT new commits"
-        else 
-          echo "Branch $BRANCH don't have new commits"
-        fi
-        
-
-    - name: Checkout branch default
-      uses: actions/checkout@v2
-      with:
-        ref: dev
+          if [ $COMMIT_COUNT -gt 0 ]; then
+            echo "Branch $BRANCH have $COMMIT_COUNT new commits"
+          else 
+            echo "Branch $BRANCH don't have new commits"
+          fi
