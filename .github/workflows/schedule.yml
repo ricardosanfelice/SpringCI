@@ -15,10 +15,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ matrix.branch }}
+          fetch-depth: 0
       - name: "Check for new commits"
         run: |
           BRANCH=$(git branch --show-current)
           LAST_TAG="$(git describe --abbrev=0 || echo "-1")"
+          echo "Last generated tag -> $LAST_TAG"
           COMMIT_COUNT=0
           if [ "$LAST_TAG" == "-1" ]; then
               COMMIT_COUNT=$(git log --oneline | wc -l)
